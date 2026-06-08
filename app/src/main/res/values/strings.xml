@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+<string name="app_name">Star BookOrbit</string>
+<string name="setup_subtitle">Connect to your BookOrbit library</string>
+<string name="btn_connect">Connect</string>
+<string name="btn_retry">Try Again</string>
+<string name="error_cant_reach">Cannot reach your library.\nCheck your connection or URL.</string>
+<string name="action_refresh">Refresh</string>
+<string name="action_disconnect">Change server</string>
+<string name="hint_drag_fab">Tip: Hold and drag the button on the right anywhere</string>
+<string name="action_got_it">Got it</string>
+<string name="action_paste_url">Paste URL</string>
+<string name="example_server_url">e.g., http://192.168.1.5:8090</string>
+</resources>
