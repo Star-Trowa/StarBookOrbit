@@ -2,13 +2,13 @@
 
 A clean, open-source Android client for your self-hosted [BookOrbit](https://github.com/every-day-things/book-orbit) library.
 
-No browsers. No tracking. No ads. No accounts. Just your books. And a feature rich book reader.
+No browsers, tracking, ads, or accounts. Just your books. And a feature rich book reader.
 
 ---
 
 ## Why Star-BookOrbit?
 
-BookOrbit's web UI and the built-in reader is excellent — but opening it in a browser means living with tabs, address bars, and the browser stealing your back button. Orbit wraps it in a proper Android app so it behaves like one.
+BookOrbit's web UI and the built-in reader is excellent — but opening it in a browser means living with tabs, address bars, and the browser stealing your back button. Star-BookOrbit wraps it in a proper Android app so it behaves like one.
 
 | Without Star BookOrbit                                                        | With Star BookOrbit                                                                              |
 |-------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
@@ -25,16 +25,32 @@ BookOrbit's web UI and the built-in reader is excellent — but opening it in a 
 
 ## Screenshots
 
-[]()
-[]()
-[]()
+<p align="center">
+  <img src="assets/ss-sbo_1.jpg" width="250" alt="Orbit Setup Screen">
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/ss-sbo_2.jpg" width="250" alt="Orbit Setup Screen">
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/ss-sbo_3.jpg" width="250" alt="Orbit Setup Screen">
+  &nbsp;&nbsp;&nbsp;&nbsp;
+</p>
 
+<br>
+
+<p align="center">
+  <img src="assets/ss-t-sbo_1.jpg" width="250" alt="Orbit Setup Screen">
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/ss-t-sbo_2.jpg" width="250" alt="Orbit Setup Screen">
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/ss-t-sbo_3.jpg" width="250" alt="Orbit Setup Screen">
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/ss-t-sbo_4.jpg" width="250" alt="Orbit Setup Screen">
+</p>
 
 ---
 
 ## Features
 
-- **Zero Browser Chrome:** True edge-to-edge reading. No address bars, no bottom navigation tabs.
+- **Zero Browser Chrome:** True edge-to-edge reading. No address bars, nor bottom navigation tabs.
 - **HTTP, HTTPS & Tailscale Friendly:** Bypasses standard PWA HTTPS restrictions, easily handling raw local IPs and custom ports.
 - **Draggable Utility Button:** A transparent, movable FAB that stays out of the way of your book text while giving you quick access to refresh or disconnect.
 - **Encrypted Caching:** Your server URLs and connection strings are secured locally using Android's `EncryptedSharedPreferences`.
@@ -51,10 +67,10 @@ BookOrbit's web UI and the built-in reader is excellent — but opening it in a 
 ### Prerequisites
 
 - Android 8.0+ (API 26)
-- A running [BookOrbit](https://github.com/bookorbit/bookorbit) instance accessible from your phone
+- A running [BookOrbit](https://github.com/bookorbit/bookorbit) instance accessible from your phone (the url:port should be your own BookOrbit address)
   - Local network: `http://192.168.x.x:8090`
-  - Remote (e.g.: via Tailscale): `http://100.x.x.x:8090`
-  - Public HTTPS (e.g.: via Cloudflare or nginx): `https://your-device.ts.net`
+  - Remote (e.g. via Tailscale): `http://100.x.x.x:8090`
+  - Public HTTPS (e.g. via Cloudflare or nginx): `https://your-device.ts.net`
 
 ### Install
 
