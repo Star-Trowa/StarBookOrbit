@@ -26,24 +26,32 @@ BookOrbit's web UI and the built-in reader is excellent — but opening it in a 
 ## Screenshots
 
 <p align="center">
-  <img src="assets/ss-sbo_1.jpg" width="250" alt="Orbit Setup Screen">
+  <img src="assets/ss-sbo_1.jpg" width="250" alt="Start Page">
   &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="assets/ss-sbo_2.jpg" width="250" alt="Orbit Setup Screen">
+  <img src="assets/ss-sbo_2.jpg" width="250" alt="Login Screen">
   &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="assets/ss-sbo_3.jpg" width="250" alt="Orbit Setup Screen">
+  <img src="assets/ss-sbo_3.jpg" width="250" alt="Dashboard">
   &nbsp;&nbsp;&nbsp;&nbsp;
 </p>
 
 <br>
 
 <p align="center">
-  <img src="assets/ss-t-sbo_1.jpg" width="250" alt="Orbit Setup Screen">
+  <img src="assets/ss-t-sbo_1.jpg" width="250" alt="Refresh & Change Server Button">
   &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="assets/ss-t-sbo_2.jpg" width="250" alt="Orbit Setup Screen">
+  <img src="assets/ss-t-sbo_2.jpg" width="250" alt="Ebook Preview Dark">
   &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="assets/ss-t-sbo_3.jpg" width="250" alt="Orbit Setup Screen">
+  <img src="assets/ss-t-sbo_3.jpg" width="250" alt="Ebook Preview Light">
   &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="assets/ss-t-sbo_4.jpg" width="250" alt="Orbit Setup Screen">
+  <img src="assets/ss-t-sbo_4.jpg" width="250" alt="Stats Page">
+</p>
+
+<br>
+
+<p align="center">
+  <video src="assets/audiobook.mp4" width="250" controls aria-label="Audiobook Preview">
+  Sorry, your browser doesn't support embedded videos.
+  </video>
 </p>
 
 ---

@@ -19,3 +19,8 @@ local.properties
 .gradle/
 build/
 */build/
+
+# Build output and binaries
+app/release/
+*.apk
+*.aab
