@@ -1,9 +1,11 @@
 package io.github.star_trowa.starbookorbit.presentation.reader
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
 import android.content.res.Resources
+import android.net.Uri
 import android.view.MotionEvent
 import android.widget.PopupMenu
 import androidx.core.view.ViewCompat
@@ -11,12 +13,14 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
 import android.view.ViewGroup
+import android.webkit.ValueCallback
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebChromeClient
 import android.webkit.WebViewClient
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
@@ -43,6 +47,19 @@ class ReaderActivity : AppCompatActivity() {
     private lateinit var currentUrl: String
 
     private lateinit var binding: ActivityReaderBinding
+
+    private var fileUploadCallback: ValueCallback<Array<Uri>>? = null
+
+    private val filePickerLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            val uris = if (result.resultCode == RESULT_OK) {
+                WebChromeClient.FileChooserParams.parseResult(result.resultCode, result.data)
+            } else {
+                null
+            }
+            fileUploadCallback?.onReceiveValue(uris)
+            fileUploadCallback = null
+        }
 
     private val viewModel: ReaderViewModel by viewModels {
         val container = (application as StarBookOrbitApp).container
@@ -232,8 +249,31 @@ class ReaderActivity : AppCompatActivity() {
             }
 
             webChromeClient = object : WebChromeClient() {
+
                 override fun onProgressChanged(view: WebView?, newProgress: Int) {
                     binding.progress.progress = newProgress
+                }
+
+                override fun onShowFileChooser(
+                    webView: WebView?,
+                    filePathCallback: ValueCallback<Array<Uri>>?,
+                    fileChooserParams: FileChooserParams?
+                ): Boolean {
+                    fileUploadCallback?.onReceiveValue(null)
+                    fileUploadCallback = filePathCallback
+
+                    val intent = fileChooserParams?.createIntent() ?: Intent(Intent.ACTION_GET_CONTENT).apply {
+                        type = "*/*"
+                    }
+
+                    try {
+                        filePickerLauncher.launch(intent)
+                    } catch (_: ActivityNotFoundException) {
+                        fileUploadCallback?.onReceiveValue(null) // Safe-reset the WebView engine; tell WebView: canceled
+                        fileUploadCallback = null // Clear the reference
+                        return false // Tell WebChromeClient: failed
+                    }
+                    return true
                 }
             }
         }
