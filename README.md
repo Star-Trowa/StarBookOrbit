@@ -108,6 +108,15 @@ cd StarBookOrbit
 
 ---
 
+## Troubleshooting
+### Audio pausing in the background?
+  Android's battery optimization might kill the app while you are listening with the screen off. To fix this:
+  - Long-press the StarBookOrbit app icon and tap App Info (the ⓘ button).
+  - Tap on App battery usage (or just Battery).
+  - Change the setting from "Optimized" to "Unrestricted".
+
+---
+
 ## Roadmap
 
 - [ ] Multiple saved server URLs
@@ -128,4 +137,18 @@ Also, try to aim for adding test coverage for the code added/edited.
 ## License
 
 MIT — do whatever you want with it.
+
+---
+
+
+## Support
+
+If my themes made your keyboard a little nicer, consider supporting my work:
+
+* **GitHub Sponsors:** [Sponsor @Star-Trowa](https://github.com/sponsors/Star-Trowa)
+* **Ko-fi:** [ko-fi.com/Star_Trowa](https://ko-fi.com/star_trowa)
+* <details>
+  <summary><b>Click to show UPI QR Code (India)</b></summary>
+  <img src="https://github.com/user-attachments/assets/5a7461be-9bb1-401a-8877-98e148ddd80d" width="250" alt="Star_Trowa UPI QR Code">
+</details>
 
