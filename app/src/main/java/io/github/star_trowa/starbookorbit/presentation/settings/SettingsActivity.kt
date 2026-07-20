@@ -1,5 +1,6 @@
 package io.github.star_trowa.starbookorbit.presentation.settings
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
@@ -11,15 +12,30 @@ import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import androidx.core.content.edit
 
 class SettingsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySettingsBinding
 
+    companion object {
+        const val PREFS_NAME = "orbit_settings"
+        const val KEY_VOLUME_PAGING = "pref_volume_paging"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Initialize SharedPreferences
+        val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+
+        binding.switchVolumePaging.isChecked = prefs.getBoolean(KEY_VOLUME_PAGING, false)
+        binding.switchVolumePaging.setOnCheckedChangeListener { _, isChecked ->
+            prefs.edit { putBoolean(KEY_VOLUME_PAGING, isChecked) }
+        }
+
         ViewCompat.setOnApplyWindowInsetsListener(binding.appBar) { view, insets ->
             val statusBarInset = insets.getInsets(WindowInsetsCompat.Type.statusBars())
             view.updatePadding(top = statusBarInset.top)

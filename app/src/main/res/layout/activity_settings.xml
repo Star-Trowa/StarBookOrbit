@@ -34,6 +34,27 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <!-- Turn Pages -->
+            <TextView style="@style/SettingsSectionHeader" android:text="@string/settings_section_page_turn" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorOutline">
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/switchVolumePaging"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_volume_paging"
+                    android:padding="16dp"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+
+            </com.google.android.material.card.MaterialCardView>
+
             <!-- Battery -->
             <TextView style="@style/SettingsSectionHeader" android:text="@string/settings_section_battery" />
 

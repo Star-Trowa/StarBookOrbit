@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.content.res.Resources
 import android.net.Uri
+import android.view.KeyEvent
 import android.view.MotionEvent
 import android.widget.PopupMenu
 import androidx.core.view.ViewCompat
@@ -43,13 +44,16 @@ class ReaderActivity : AppCompatActivity() {
         const val EXTRA_URL = "extra_url"
         private const val PREFS_HINTS = "orbit_hints"
         private const val KEY_DRAG_HINT_SHOWN = "drag_hint_shown"
+        private val AUDIO_FORMATS = listOf("=m4b", "=mp3", "=ogg", "=m4a", "=opus", "=flac")
     }
-
     private lateinit var currentUrl: String
 
     private lateinit var binding: ActivityReaderBinding
 
     private var fileUploadCallback: ValueCallback<Array<Uri>>? = null
+
+    // Default to false so hardware powered page navigation remains off unless explicitly enabled
+    private var isVolumePagingEnabled: Boolean = false
 
     private val filePickerLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -97,6 +101,62 @@ class ReaderActivity : AppCompatActivity() {
 
         // Kick off the network ping immediately
         viewModel.verifyServer(currentUrl)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // Read the latest state from SharedPreferences every time the activity comes to the foreground
+        val prefs = getSharedPreferences(SettingsActivity.PREFS_NAME, MODE_PRIVATE)
+        isVolumePagingEnabled = prefs.getBoolean(SettingsActivity.KEY_VOLUME_PAGING, false)
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        // ONLY intercept if the setting is on AND we are inside a book
+        if (isVolumePagingEnabled && isCurrentlyReading()) {
+            when (keyCode) {
+                KeyEvent.KEYCODE_VOLUME_DOWN -> {
+                    scrollToNextPage()
+                    return true
+                }
+                KeyEvent.KEYCODE_VOLUME_UP -> {
+                    scrollToPreviousPage()
+                    return true
+                }
+            }
+        }
+        // If not in a book (e.g., on the main page), let Android handle the volume normally
+        return super.onKeyDown(keyCode, event)
+    }
+
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        if (isVolumePagingEnabled && isCurrentlyReading() &&
+            (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP)
+        ) {
+            return true
+        }
+        return super.onKeyUp(keyCode, event)
+    }
+
+    private fun isCurrentlyReading(): Boolean {
+        return isEbookUrl(binding.webView.url)
+    }
+
+    private fun isEbookUrl(url: String?): Boolean {
+        if (url == null || !url.contains("/read", ignoreCase = true)) return false
+
+        // If the URL contains any of these, it's an audiobook, not an ebook
+        return AUDIO_FORMATS.none { url.contains(it, ignoreCase = true) }
+    }
+
+    private fun scrollToNextPage() {
+        binding.webView.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_RIGHT))
+        binding.webView.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_RIGHT))
+    }
+
+    private fun scrollToPreviousPage() {
+        binding.webView.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_LEFT))
+        binding.webView.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_LEFT))
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -365,7 +425,6 @@ class ReaderActivity : AppCompatActivity() {
     override fun onDestroy() {
         binding.webView.apply {
             clearHistory()
-            clearCache(true)
             loadUrl("about:blank")
             destroy()
         }

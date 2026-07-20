@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-<string name="app_name">Star BookOrbit</string>
-<string name="setup_subtitle">Connect to your BookOrbit library</string>
-<string name="btn_connect">Connect</string>
-<string name="btn_retry">Try Again</string>
-<string name="error_cant_reach">Cannot reach your library.\nCheck your connection or URL.</string>
-<string name="action_refresh">Refresh</string>
-<string name="action_disconnect">Change server</string>
-<string name="hint_drag_fab">Tip: Hold and drag the button on the right anywhere</string>
-<string name="action_got_it">Got it</string>
-<string name="action_paste_url">Paste URL</string>
-<string name="example_server_url">e.g., http://192.168.1.5:8090</string>
-<string name="settings_title">Settings</string>
-<string name="settings_section_battery">Battery</string>
-<string name="settings_battery_description">Some phones aggressively kill background apps, which can cause Orbit to reload when switching back from another app. Allowing unrestricted battery usage prevents this.</string>
-<string name="settings_battery_action">Open App Settings</string>
-<string name="settings_battery_unavailable">Battery settings unavailable on this device</string>
-<string name="action_settings">Settings</string>
+    <string name="app_name">Star BookOrbit</string>
+    <string name="setup_subtitle">Connect to your BookOrbit library</string>
+    <string name="btn_connect">Connect</string>
+    <string name="btn_retry">Try Again</string>
+    <string name="error_cant_reach">Cannot reach your library.\nCheck your connection or URL.</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="action_disconnect">Change server</string>
+    <string name="hint_drag_fab">Tip: Hold and drag the button on the right anywhere</string>
+    <string name="action_got_it">Got it</string>
+    <string name="action_paste_url">Paste URL</string>
+    <string name="example_server_url">e.g., http://192.168.1.5:8090</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_section_battery">Battery</string>
+    <string name="settings_battery_description">Some phones aggressively kill background apps, which can cause Orbit to reload when switching back from another app. Allowing unrestricted battery usage prevents this.</string>
+    <string name="settings_battery_action">Open App Settings</string>
+    <string name="settings_battery_unavailable">Battery settings unavailable on this device</string>
+    <string name="action_settings">Settings</string>
+    <string name="settings_section_page_turn">Navigate Ebook</string>
+    <string name="settings_volume_paging">Turn book pages with volume keys</string>
 </resources>

@@ -20,6 +20,7 @@ BookOrbit's web UI and the built-in reader is excellent — but opening it in a 
 | Reading stats are not instant or reliable                                     | Built-in reading stats give complete, clean, in-depth details                                    |
 | Browser needs to be opened, your tab needs to be tracked by you               | Directly open your BookOrbit app and start browsing your books, low memory footprint             |
 | You've to use additional OPDS apps, where two way sync is not always possible | Two-way sync is built in as you are using the BookOrbit built-in reader itself                   |
+| Volume keys cannot be used for navigating between next and previous page      | Your device's hardware button, like mobile volume keys can be used to navigate the book          |
 
 ---
 
@@ -31,6 +32,8 @@ BookOrbit's web UI and the built-in reader is excellent — but opening it in a 
   <img src="assets/ss-sbo_2.jpg" width="250" alt="Login Screen">
   &nbsp;&nbsp;&nbsp;&nbsp;
   <img src="assets/ss-sbo_3.jpg" width="250" alt="Dashboard">
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/ss-sbo_4.jpg" width="250" alt="Settings">
   &nbsp;&nbsp;&nbsp;&nbsp;
 </p>
 
@@ -63,9 +66,9 @@ BookOrbit's web UI and the built-in reader is excellent — but opening it in a 
 - **Draggable Utility Button:** A transparent, movable FAB that stays out of the way of your book text while giving you quick access to refresh or disconnect.
 - **Encrypted Caching:** Your server URLs and connection strings are secured locally using Android's `EncryptedSharedPreferences`.
 - **Universal Compatibility:** Built perfectly for BookOrbit, but naturally supports any responsive self-hosted media server (Kavita, Audiobookshelf, Komga) (Future Roadmap).
+- **New!!!** Use Volume keys to move between your ebook pages easily and ergonomically.
 - Remembers your BookOrbit server URL across restarts
 - Full Material Design 3 with dynamic color (Android 12+)
-- Automatic dark/light mode following system settings
 - Zero telemetry, zero analytics, zero accounts
 - FOSS
 ---
@@ -100,25 +103,38 @@ cd StarBookOrbit
 
 1. Open Orbit — enter your BookOrbit server URL on first launch
 2. Tap **Connect** — your library opens full screen
-3. The small floating button gives you **Refresh** and **Change server**
+3. The small floating, translucent button gives you **Refresh**, **Change server** and **Settings**
 
 **Tip**: Drag the button anywhere on screen to keep it out of the way when reading books
 
-**Note**: If you use any proxy or VPN, make sure to turn it on before connecting in the app.
+**Note**: If you use any proxy or VPN for your BookOrbit, make sure to turn it on before connecting in this app.
 
 ---
 
 ## Troubleshooting
-### Audio pausing in the background?
+### 1. Audio pausing in the background?
   Android's battery optimization might kill the app while you are listening with the screen off. To fix this:
+  - In app, go to Settings > Battery
+  - Update the battery settings to unrestricted
+
+OR
+
   - Long-press the StarBookOrbit app icon and tap App Info (the ⓘ button).
   - Tap on App battery usage (or just Battery).
   - Change the setting from "Optimized" to "Unrestricted".
+
+### 2. Volume keys not working to navigate the pages?
+  The setting need to be enabled first to turn pages using volume keys. To enable this:
+  - In app, go to Settings > Navigate Ebook
+  - Change the toggle to enable(or disable) navigation via the volume keys
+
 
 ---
 
 ## Roadmap
 
+- [ ] Add option to navigate via tap besides swipe
+- ~~[x] Use Volume keys to navigate the pages~~
 - [ ] Multiple saved server URLs
 - [ ] Theme override (force light/dark independent of system)
 - [ ] Support for Audiobookshelf and Kavita
@@ -152,3 +168,4 @@ If my themes made your keyboard a little nicer, consider supporting my work:
   <img src="https://github.com/user-attachments/assets/5a7461be-9bb1-401a-8877-98e148ddd80d" width="250" alt="Star_Trowa UPI QR Code">
 </details>
 
+Please **star** this project of it helped you :)
