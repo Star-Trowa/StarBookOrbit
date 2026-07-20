@@ -1,6 +1,6 @@
 # Star-BookOrbit — BookOrbit Android Client
 
-A clean, open-source Android client for your self-hosted [BookOrbit](https://github.com/every-day-things/book-orbit) library.
+A clean, open-source Android client for your self-hosted [BookOrbit](https://github.com/bookorbit/bookorbit) library.
 
 No browsers, tracking, ads, or accounts. Just your books. And a feature rich book reader.
 
