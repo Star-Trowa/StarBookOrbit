@@ -12,4 +12,10 @@
 <string name="action_got_it">Got it</string>
 <string name="action_paste_url">Paste URL</string>
 <string name="example_server_url">e.g., http://192.168.1.5:8090</string>
+<string name="settings_title">Settings</string>
+<string name="settings_section_battery">Battery</string>
+<string name="settings_battery_description">Some phones aggressively kill background apps, which can cause Orbit to reload when switching back from another app. Allowing unrestricted battery usage prevents this.</string>
+<string name="settings_battery_action">Open App Settings</string>
+<string name="settings_battery_unavailable">Battery settings unavailable on this device</string>
+<string name="action_settings">Settings</string>
 </resources>

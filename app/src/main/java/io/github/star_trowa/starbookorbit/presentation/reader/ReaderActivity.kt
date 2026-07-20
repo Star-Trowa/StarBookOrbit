@@ -31,6 +31,7 @@ import com.google.android.material.snackbar.Snackbar
 import io.github.star_trowa.starbookorbit.R
 import io.github.star_trowa.starbookorbit.StarBookOrbitApp
 import io.github.star_trowa.starbookorbit.databinding.ActivityReaderBinding
+import io.github.star_trowa.starbookorbit.presentation.settings.SettingsActivity
 import io.github.star_trowa.starbookorbit.presentation.setup.SetupActivity
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -173,6 +174,10 @@ class ReaderActivity : AppCompatActivity() {
                         } else {
                             binding.webView.reload()
                         }
+                        true
+                    }
+                    R.id.action_settings -> {
+                        startActivity(Intent(this, SettingsActivity::class.java))
                         true
                     }
                     R.id.action_disconnect -> { // FIXED: Replaced '2 ->' with actual ID

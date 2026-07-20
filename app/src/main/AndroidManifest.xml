@@ -30,6 +30,11 @@
             android:exported="false"
             android:configChanges="orientation|screenSize|keyboardHidden" />
 
+        <activity
+            android:name=".presentation.settings.SettingsActivity"
+            android:exported="false"
+            android:label="@string/settings_title" />
+
     </application>
 
 </manifest>
