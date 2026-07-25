@@ -7,7 +7,7 @@
     <string name="btn_retry">Try Again</string>
     <string name="error_cant_reach">Cannot reach your library.\nCheck your connection or URL.</string>
     <string name="action_refresh">Refresh</string>
-    <string name="action_disconnect">Change server</string>
+    <string name="action_swap_server">Swap server</string>
     <string name="hint_drag_fab">Tip: Hold and drag the button on the right anywhere</string>
     <string name="action_got_it">Got it</string>
     <string name="action_paste_url">Paste URL</string>
@@ -21,4 +21,5 @@
     <string name="settings_section_page_turn">Navigate Ebook</string>
     <string name="settings_volume_paging">Turn book pages with volume keys</string>
     <string name="open_user_options">Open user options</string>
+    <string name="forward">Forward</string>
 </resources>

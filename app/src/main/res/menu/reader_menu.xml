@@ -3,14 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_forward"
+        android:title="@string/forward"
+        android:icon="@drawable/ic_arrow_forward"
+        app:showAsAction="always"/>
+
+    <item
         android:id="@+id/action_refresh"
         android:icon="@drawable/ic_refresh"
         android:title="@string/action_refresh"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_disconnect"
-        android:title="@string/action_disconnect"
+        android:id="@+id/action_swap_server"
+        android:title="@string/action_swap_server"
         app:showAsAction="never" />
 
     <item

@@ -40,7 +40,7 @@ BookOrbit's web UI and the built-in reader is excellent — but opening it in a 
 <br>
 
 <p align="left">
-  <img src="assets/ss-t-sbo_1.jpg" width="250" alt="Refresh & Change Server Button">
+  <img src="assets/ss-t-sbo_1.jpg" width="250" alt="Refresh & Swap Server Button">
   &nbsp;&nbsp;&nbsp;&nbsp;
   <img src="assets/ss-t-sbo_2.jpg" width="250" alt="Ebook Preview Dark">
   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -103,7 +103,7 @@ cd StarBookOrbit
 
 1. Open Orbit — enter your BookOrbit server URL on first launch
 2. Tap **Connect** — your library opens full screen
-3. The small floating, translucent button gives you **Refresh**, **Change server** and **Settings**
+3. The small floating, translucent button gives you **Refresh**, **Swap server** and **Settings**
 
 **Tip**: Drag the button anywhere on screen to keep it out of the way when reading books
 

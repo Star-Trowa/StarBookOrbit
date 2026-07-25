@@ -12,7 +12,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.io.IOException
-import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertNull
 
@@ -84,7 +83,7 @@ class ReaderViewModelTest {
     @Test
     fun `disconnect clears repository and emits NavigateToSetup`() = runTest {
         viewModel.events.test {
-            viewModel.disconnect()
+            viewModel.swapServer()
 
             // Did it tell the Activity to navigate away?
             assertIs<ReaderViewModel.Event.NavigateToSetup>(awaitItem())

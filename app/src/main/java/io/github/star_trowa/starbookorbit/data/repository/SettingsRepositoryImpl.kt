@@ -25,7 +25,7 @@ class SettingsRepositoryImpl(context: Context) : SettingsRepository {
         .build()
 
     // 2. Build the encrypted preferences file
-    // TODO: Wrap this initialization in a coroutine block on Dispatchers.IO (to avoid sttuter)
+    // TODO: Wrap this initialization in a coroutine block on Dispatchers.IO (to avoid stutter)
     private val sharedPreferences = EncryptedSharedPreferences.create(
         context,
         Keys.PREFS_NAME,

@@ -1,10 +1,10 @@
 package io.github.star_trowa.starbookorbit.presentation.setup
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import android.content.ClipboardManager
@@ -53,7 +53,7 @@ class SetupActivity : AppCompatActivity() {
 
         // 4. The New "Paste" Button
         binding.btnPaste.setOnClickListener {
-            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
             val clipText = clipboard.primaryClip?.getItemAt(0)?.text?.toString()
 
             if (!clipText.isNullOrBlank()) {
@@ -72,14 +72,44 @@ class SetupActivity : AppCompatActivity() {
                 false
             }
         }
+
+        // 6. The "Back" Button Escape Hatch
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val currentState = viewModel.state.value
+
+                if (currentState is SetupViewModel.State.ExistingConfig) {
+                    // Send safely back to their library
+                    navigateToReader(currentState.config)
+                } else {
+                    // No saved server, exit the app normally
+                    finish()
+                }
+            }
+        })
     }
 
     private fun observeState() {
+        // Check if the flag was thrown
+        val forceShow = intent.getBooleanExtra("force_show_setup", false)
+        // Remove it so Android forgets it on recreation
+        if (forceShow) {
+            intent.removeExtra("force_show_setup")
+        }
+
         lifecycleScope.launch {
             viewModel.state.collectLatest { state ->
                 when (state) {
                     is SetupViewModel.State.CheckingExisting -> showLoading(true)
-                    is SetupViewModel.State.ExistingConfig -> navigateToReader(state.config)
+                    is SetupViewModel.State.ExistingConfig -> {
+                        if (forceShow) {
+                            // If swapping servers, ignore the saved config and show the UI
+                            showLoading(false)
+                        } else {
+                            // Normal app launch, log right in
+                            navigateToReader(state.config)
+                        }
+                    }
                     is SetupViewModel.State.Idle -> showLoading(false)
                     is SetupViewModel.State.Saving -> showLoading(true)
                     is SetupViewModel.State.Error -> {

@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import io.github.star_trowa.starbookorbit.domain.model.ServerConnectionResult
-import io.github.star_trowa.starbookorbit.domain.model.ServerType
 import io.github.star_trowa.starbookorbit.domain.repository.SettingsRepository
 import io.github.star_trowa.starbookorbit.domain.usecase.CheckServerStatusUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -69,9 +68,8 @@ class ReaderViewModel(
         }
     }
 
-    fun disconnect() {
+    fun swapServer() {
         viewModelScope.launch {
-            settingsRepository.clear()
             _events.emit(Event.NavigateToSetup)
         }
     }

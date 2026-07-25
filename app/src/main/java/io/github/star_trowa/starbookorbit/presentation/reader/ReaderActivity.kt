@@ -218,6 +218,11 @@ class ReaderActivity : AppCompatActivity() {
         binding.fab.setOnClickListener { anchor ->
             val popup = PopupMenu(this, anchor)
             popup.menuInflater.inflate(R.menu.reader_menu, popup.menu)
+
+            // Only show "Forward" if there is actually a page to go forward to
+            val forwardItem = popup.menu.findItem(R.id.action_forward)
+            forwardItem?.isVisible = binding.webView.canGoForward()
+
             popup.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.action_refresh -> {
@@ -232,8 +237,14 @@ class ReaderActivity : AppCompatActivity() {
                         startActivity(Intent(this, SettingsActivity::class.java))
                         true
                     }
-                    R.id.action_disconnect -> {
-                        viewModel.disconnect()
+                    R.id.action_swap_server -> {
+                        viewModel.swapServer()
+                        true
+                    }
+                    R.id.action_forward -> {
+                        if (binding.webView.canGoForward()) {
+                            binding.webView.goForward()
+                        }
                         true
                     }
                     else -> false
@@ -349,8 +360,8 @@ class ReaderActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (binding.errorState.isVisible) {
-                    // 1. If trapped on the error screen, treat 'Back' as 'Change Server'
-                    viewModel.disconnect()
+                    // 1. If trapped on the error screen, treat 'Back' as 'Swap Server'
+                    viewModel.swapServer()
                 } else if (binding.webView.canGoBack()) {
                     // 2. If browsing normally, go back to the previous web page
                     binding.webView.goBack()
@@ -369,6 +380,7 @@ class ReaderActivity : AppCompatActivity() {
                     is ReaderViewModel.Event.NavigateToSetup -> {
                         val intent = Intent(this@ReaderActivity, SetupActivity::class.java).apply {
                             putExtra(SetupActivity.EXTRA_PREFILL_URL, currentUrl)
+                            putExtra("force_show_setup", true)
                         }
                         startActivity(intent)
                         finish()
