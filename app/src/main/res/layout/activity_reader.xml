@@ -73,6 +73,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:alpha="0.75"
+        android:contentDescription="@string/open_user_options"
         android:src="@drawable/ic_refresh"
         app:fabSize="mini"
         app:tint="?attr/colorOnSurface"

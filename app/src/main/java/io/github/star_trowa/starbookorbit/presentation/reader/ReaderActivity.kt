@@ -103,14 +103,6 @@ class ReaderActivity : AppCompatActivity() {
         viewModel.verifyServer(currentUrl)
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        // Read the latest state from SharedPreferences every time the activity comes to the foreground
-        val prefs = getSharedPreferences(SettingsActivity.PREFS_NAME, MODE_PRIVATE)
-        isVolumePagingEnabled = prefs.getBoolean(SettingsActivity.KEY_VOLUME_PAGING, false)
-    }
-
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         // ONLY intercept if the setting is on AND we are inside a book
         if (isVolumePagingEnabled && isCurrentlyReading()) {
@@ -228,7 +220,7 @@ class ReaderActivity : AppCompatActivity() {
             popup.menuInflater.inflate(R.menu.reader_menu, popup.menu)
             popup.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
-                    R.id.action_refresh -> { // FIXED: Replaced '1 ->' with actual ID
+                    R.id.action_refresh -> {
                         if (binding.errorState.isVisible) {
                             viewModel.verifyServer(currentUrl)
                         } else {
@@ -240,7 +232,7 @@ class ReaderActivity : AppCompatActivity() {
                         startActivity(Intent(this, SettingsActivity::class.java))
                         true
                     }
-                    R.id.action_disconnect -> { // FIXED: Replaced '2 ->' with actual ID
+                    R.id.action_disconnect -> {
                         viewModel.disconnect()
                         true
                     }
@@ -274,6 +266,11 @@ class ReaderActivity : AppCompatActivity() {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun setupWebView() {
+        val cookieManager = android.webkit.CookieManager.getInstance()
+        cookieManager.setAcceptCookie(true)
+        // TODO: If SSO is implemented, uncomment below
+        //cookieManager.setAcceptThirdPartyCookies(binding.webView, true)
+
         binding.webView.apply {
             settings.apply {
                 javaScriptEnabled = true
@@ -422,10 +419,30 @@ class ReaderActivity : AppCompatActivity() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        // Force the session to save to the phone's disk IMMEDIATELY
+        android.webkit.CookieManager.getInstance().flush()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Wake the WebView back up
+        binding.webView.onResume()
+
+        // Read the latest state from SharedPreferences every time the activity comes to the foreground
+        val prefs = getSharedPreferences(SettingsActivity.PREFS_NAME, MODE_PRIVATE)
+        isVolumePagingEnabled = prefs.getBoolean(SettingsActivity.KEY_VOLUME_PAGING, false)
+    }
+
     override fun onDestroy() {
+        // Save cookies one last time just to be safe
+        android.webkit.CookieManager.getInstance().flush()
+
         binding.webView.apply {
             clearHistory()
-            loadUrl("about:blank")
+            // Detach from layout to prevent memory leaks
+            (parent as? ViewGroup)?.removeView(this)
             destroy()
         }
         super.onDestroy()
