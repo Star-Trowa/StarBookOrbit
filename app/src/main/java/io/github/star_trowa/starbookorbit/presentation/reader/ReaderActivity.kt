@@ -9,6 +9,7 @@ import android.net.Uri
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.widget.PopupMenu
+import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -74,16 +75,21 @@ class ReaderActivity : AppCompatActivity() {
         )
     }
 
+    private fun hideSystemBars() {
+        WindowInsetsControllerCompat(window, window.decorView).apply {
+            systemBarsBehavior =
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            hide(WindowInsetsCompat.Type.systemBars())
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Full screen — no white bar
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        WindowInsetsControllerCompat(window, window.decorView).apply {
-            hide(WindowInsetsCompat.Type.systemBars())
-            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        }
+        hideSystemBars()
 
         binding = ActivityReaderBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -106,10 +112,7 @@ class ReaderActivity : AppCompatActivity() {
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
-            WindowInsetsControllerCompat(window, window.decorView).apply {
-                hide(WindowInsetsCompat.Type.systemBars())
-                systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-            }
+            hideSystemBars()
         }
     }
 
@@ -290,7 +293,7 @@ class ReaderActivity : AppCompatActivity() {
         val cookieManager = android.webkit.CookieManager.getInstance()
         cookieManager.setAcceptCookie(true)
         // TODO: If SSO is implemented, uncomment below
-        //cookieManager.setAcceptThirdPartyCookies(binding.webView, true)
+        // cookieManager.setAcceptThirdPartyCookies(binding.webView, true)
 
         binding.webView.apply {
             settings.apply {
@@ -301,6 +304,26 @@ class ReaderActivity : AppCompatActivity() {
                 builtInZoomControls = false
                 displayZoomControls = false
                 setSupportZoom(true)
+            }
+
+            setDownloadListener { url, userAgent, contentDisposition, mimeType, _ ->
+                val request = android.app.DownloadManager.Request(url.toUri()).apply {
+                    val cookies = cookieManager.getCookie(url)
+                    addRequestHeader("cookie", cookies)
+                    addRequestHeader("User-Agent", userAgent)
+
+                    val fileName = android.webkit.URLUtil.guessFileName(url, contentDisposition, mimeType)
+                    setTitle(fileName)
+                    setDescription("Downloading file...")
+                    setNotificationVisibility(android.app.DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+
+                    setDestinationInExternalPublicDir(android.os.Environment.DIRECTORY_DOWNLOADS, fileName)
+                }
+
+                val downloadManager = getSystemService(DOWNLOAD_SERVICE) as android.app.DownloadManager
+                downloadManager.enqueue(request)
+
+                android.widget.Toast.makeText(this@ReaderActivity, "Download started...", android.widget.Toast.LENGTH_SHORT).show()
             }
 
             webViewClient = object : WebViewClient() {

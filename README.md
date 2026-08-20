@@ -168,4 +168,4 @@ If my themes made your keyboard a little nicer, consider supporting my work:
   <img src="https://github.com/user-attachments/assets/5a7461be-9bb1-401a-8877-98e148ddd80d" width="250" alt="Star_Trowa UPI QR Code">
 </details>
 
-Please **star** this project of it helped you :)
+Please **star** this project if it helped you :)
