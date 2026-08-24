@@ -312,7 +312,28 @@ class ReaderActivity : AppCompatActivity() {
                     addRequestHeader("cookie", cookies)
                     addRequestHeader("User-Agent", userAgent)
 
-                    val fileName = android.webkit.URLUtil.guessFileName(url, contentDisposition, mimeType)
+                    var fileName = android.webkit.URLUtil.guessFileName(url, contentDisposition, mimeType)
+
+                    // Intercept and manually parse the header if Android gets lazy
+                    if (contentDisposition != null) {
+                        try {
+                            // Look for: filename="The Book Title.epub"
+                            var match = Regex("filename=\"([^\"]+)\"").find(contentDisposition)
+                            if (match == null) {
+                                // Look for unquoted: filename=The_Book_Title.epub
+                                match = Regex("filename=([^;]+)").find(contentDisposition)
+                            }
+                            if (match != null) {
+                                fileName = match.groupValues[1]
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+
+                    // Clean up URL encoding (e.g. turns "The%20Book.epub" into "The Book.epub")
+                    fileName = java.net.URLDecoder.decode(fileName, "UTF-8")
+
                     setTitle(fileName)
                     setDescription("Downloading file...")
                     setNotificationVisibility(android.app.DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
