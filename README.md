@@ -1,12 +1,12 @@
 # Star-BookOrbit — Unofficial Android client for BookOrbit
 
-<a href="https://github.com/Star-Trowa/StarBookOrbit/stargazers"><img src="https://img.shields.io/github/stars/Star-Trowa/StarBookOrbit?style=flat&logo=github" width="200"></a>
-<a href="https://github.com/Star-Trowa/StarBookOrbit/releases"><img src="https://img.shields.io/github/downloads/Star-Trowa/StarBookOrbit/total?label=Downloads&logo=github" width="200"></a>
-<a href="https://github.com/Star-Trowa/StarBookOrbit/releases/latest"><img src="https://img.shields.io/github/v/release/Star-Trowa/StarBookOrbit?label=Latest%20Release" width="200"></a>
+<a href="https://github.com/Star-Trowa/StarBookOrbit/stargazers"><img src="https://img.shields.io/github/stars/Star-Trowa/StarBookOrbit?style=flat&logo=github" height="20"></a>
+<a href="https://github.com/Star-Trowa/StarBookOrbit/releases"><img src="https://img.shields.io/github/downloads/Star-Trowa/StarBookOrbit/total?label=Downloads&logo=github" height="20"></a>
+<a href="https://github.com/Star-Trowa/StarBookOrbit/releases/latest"><img src="https://img.shields.io/github/v/release/Star-Trowa/StarBookOrbit?label=Latest%20Release" height="20"></a>
 <a href="https://github.com/sponsors/Star-Trowa">
-<img src="https://img.shields.io/github/sponsors/Star-Trowa?label=GitHub%20Sponsors&logo=githubsponsors&logoColor=white" alt="GitHub Sponsors" height="28">
+<img src="https://img.shields.io/github/sponsors/Star-Trowa?label=GitHub%20Sponsors&logo=githubsponsors&logoColor=white" alt="GitHub Sponsors" height="20">
 </a>
-<a href="https://github.com/Star-Trowa/StarBookOrbit/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Star-Trowa/StarBookOrbit" width="200"></a>
+<a href="https://github.com/Star-Trowa/StarBookOrbit/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Star-Trowa/StarBookOrbit"  height="20"></a>
 
 A clean, open-source Android client for your self-hosted [BookOrbit](https://github.com/bookorbit/bookorbit) library.
 
@@ -41,8 +41,6 @@ BookOrbit's web UI and the built-in reader is excellent — but opening it in a 
   <img src="assets/ss-sbo_2.jpg" width="250" alt="Login Screen">
   &nbsp;&nbsp;&nbsp;&nbsp;
   <img src="assets/ss-sbo_3.jpg" width="250" alt="Dashboard">
-  &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="assets/ss-sbo_4.jpg" width="250" alt="Settings">
   &nbsp;&nbsp;&nbsp;&nbsp;
 </p>
 
@@ -101,7 +99,7 @@ Download the latest APK directly:
 [![Latest Release](https://img.shields.io/github/v/release/Star-Trowa/StarBookOrbit?label=Download%20APK)](https://github.com/Star-Trowa/StarBookOrbit/releases/latest)
 
 <a href="https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://add/https://github.com/Star-Trowa/StarBookOrbit">
-<img src="assets/badge_obtainium.png" alt="Get it on Obtainium" width="140" height="40">
+<img src="assets/badge_obtainium.png" alt="Get it on Obtainium" height="40">
 </a>
 
 ### Build from source
