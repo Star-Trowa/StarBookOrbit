@@ -6,14 +6,12 @@ import io.github.star_trowa.starbookorbit.domain.usecase.CheckServerStatusUseCas
 import io.github.star_trowa.starbookorbit.domain.usecase.ServerVerifier
 import io.github.star_trowa.starbookorbit.presentation.reader.ReaderViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.io.IOException
 import kotlin.test.assertIs
-import kotlin.test.assertNull
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ReaderViewModelTest {
@@ -81,14 +79,11 @@ class ReaderViewModelTest {
     }
 
     @Test
-    fun `disconnect clears repository and emits NavigateToSetup`() = runTest {
+    fun `swapServer emits NavigateToSetup`() = runTest {
         viewModel.events.test {
             viewModel.swapServer()
 
-            // Did it tell the Activity to navigate away?
             assertIs<ReaderViewModel.Event.NavigateToSetup>(awaitItem())
-
-            // Did it successfully wipe the saved URL from disk?
-            assertNull(fakeRepo.serverConfig.first())        }
+        }
     }
 }

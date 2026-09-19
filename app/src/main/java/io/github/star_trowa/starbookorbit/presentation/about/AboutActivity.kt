@@ -7,6 +7,7 @@ import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import com.google.android.material.snackbar.Snackbar
 import io.github.star_trowa.starbookorbit.BuildConfig
 import io.github.star_trowa.starbookorbit.R
 import io.github.star_trowa.starbookorbit.databinding.ActivityAboutBinding
@@ -87,11 +88,19 @@ class AboutActivity : AppCompatActivity() {
     }
 
     private fun openUrl(url: String) {
-        startActivity(
-            Intent(
-                Intent.ACTION_VIEW,
-                url.toUri()
+        try {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    url.toUri()
+                )
             )
-        )
+        } catch (_: Exception) {
+            Snackbar.make(
+                binding.root,
+                R.string.settings_link_unavailable,
+                Snackbar.LENGTH_SHORT
+            ).show()
+        }
     }
 }

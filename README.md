@@ -1,4 +1,4 @@
-# Star-BookOrbit — BookOrbit Android Client
+# Star-BookOrbit — Unofficial Android client for BookOrbit
 
 <a href="https://github.com/Star-Trowa/StarBookOrbit/stargazers"><img src="https://img.shields.io/github/stars/Star-Trowa/StarBookOrbit?style=flat&logo=github" width="200"></a>
 <a href="https://github.com/Star-Trowa/StarBookOrbit/releases"><img src="https://img.shields.io/github/downloads/Star-Trowa/StarBookOrbit/total?label=Downloads&logo=github" width="200"></a>
@@ -12,22 +12,25 @@ A clean, open-source Android client for your self-hosted [BookOrbit](https://git
 
 No browsers, tracking, ads, or accounts. Just your books. And a feature rich book reader.
 
+`Star-BookOrbit is a community project and is not affiliated with or maintained by BookOrbit.`
+
 ---
 
 ## Why Star-BookOrbit?
 
 BookOrbit's web UI and the built-in reader is excellent — but opening it in a browser means living with tabs, address bars, and the browser stealing your back button. Star-BookOrbit wraps it in a proper Android app so it behaves like one.
 
-| Feature | Without Star-BookOrbit                                                                          | With Star-BookOrbit                                                                              |
-| :--- |:------------------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------|
-| **Interface** | Cluttered with browser toolbars                                                                 | Immersive, full-screen reading                                                                   |
-| **Navigation** | Device back button often closes the tab                                                         | Native back navigation within your library                                                       |
-| **Session** | Mixed cookies; sessions can expire                                                              | Isolated environment; stays logged in                                                            |
-| **Integration** | “Add to homescreen” still shows browser UI                                                      | Dedicated app icon and interface; works with HTTP, self-hosting, and Tailscale                   |
-| **Data Retention** | Clearing browser data can wipe your server URL                                                  | Remembers your server configuration                                                              |
-| **Access & Performance** | Cumbersome tab management; higher memory usage                                                  | One-tap access to your books; low memory footprint                                               |
-| **Sync & Stats** | Relies on OPDS apps; two-way sync may be delayed or unreliable, with limited reading statistics | Built-in two-way sync with instant, in-depth reading statistics direct from the BookOrbit reader |
-| **Hardware Controls** | Touch-only / basic native page navigation                                                       | Hardware volume keys and tap zones supported for page turning                                    |
+| Feature                  | Without Star-BookOrbit                                                                                    | With Star-BookOrbit                                                                              |
+| :----------------------- | :-------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------- |
+| **Interface**            | Cluttered with browser toolbars                                                                           | Immersive, full-screen reading                                                                   |
+| **Navigation**           | Device back button often closes the tab                                                                   | Native back navigation within your library                                                       |
+| **Session**              | Mixed cookies; sessions can expire                                                                        | Isolated environment; stays logged in                                                            |
+| **Integration**          | “Add to homescreen” still shows browser UI                                                                | Dedicated app icon and interface; works with HTTP, self-hosting, and Tailscale                   |
+| **Data Retention**       | Clearing browser data can wipe your server URL                                                            | Remembers your server configuration                                                              |
+| **Access & Performance** | Cumbersome tab management; higher memory usage                                                            | One-tap access to your books; low memory footprint                                               |
+| **Sync & Stats**         | Relies on OPDS apps; two-way sync sometimes may be delayed or unreliable, with limited reading statistics | Built-in two-way sync with instant, in-depth reading statistics direct from the BookOrbit reader |
+| **Hardware Controls**    | Touch-only / basic native page navigation                                                                 | Hardware volume keys and tap zones supported for page turning                                    |
+
 ---
 
 ## Screenshots
@@ -91,7 +94,6 @@ BookOrbit's web UI and the built-in reader is excellent — but opening it in a 
   - Remote (e.g. via Tailscale): `http://100.x.x.x:8090`
   - Public HTTPS (e.g. via Cloudflare or nginx or Tailscale funnel): `https://your-device.ts.net`
 
-`StarBookOrbit is a community project and is not affiliated with or maintained by BookOrbit.`
 ### Install
 
 Download the latest APK directly:
@@ -125,8 +127,11 @@ cd StarBookOrbit
 ---
 
 ## Troubleshooting
+
 ### 1. Audio pausing in the background?
+
 Android's battery optimization might kill the app while you are listening with the screen off. To fix this:
+
 - In app, go to Settings > Battery
 - Update the battery settings to unrestricted
 
@@ -137,14 +142,18 @@ OR
 - Change the setting from "Optimized" to "Unrestricted".
 
 ### 2. Volume keys not working to navigate the pages?
+
 The setting need to be enabled first to turn pages using volume keys. To enable this:
+
 - In app, go to Settings > Navigate Ebook
-- Change the toggle to enable(or disable) navigation via the volume keys
+- Change the toggle to enable (or disable) navigation via the volume keys
 
 ### 3. Tap to navigate not turning the pages?
+
 The setting need to be enabled first to use tap-zones for navigation. To enable this:
+
 - In app, go to Settings > Navigate Ebook
-- Change the toggle to enable(or disable) navigation via the tap-zones
+- Change the toggle to enable (or disable) navigation via the tap-zones
 
 ---
 
@@ -158,7 +167,6 @@ The setting need to be enabled first to use tap-zones for navigation. To enable 
 - [ ] Support for Audiobookshelf and Kavita
 - [ ] F-Droid/Droidify release
 
-
 ---
 
 ## Contributing
@@ -171,21 +179,20 @@ Also, try to aim for adding test coverage for the code added/edited.
 
 ## License
 
-MIT — do whatever you want with it.
+MIT — see [LICENSE](LICENSE) for details.
 
 ---
-
 
 ## Support
 
 If Star-BookOrbit made your bookworming a little nicer, a little happier, consider supporting my work:
 
-* **GitHub Sponsors:** [Sponsor @Star-Trowa](https://github.com/sponsors/Star-Trowa)
-* **Ko-fi:** [ko-fi.com/Star_Trowa](https://ko-fi.com/star_trowa)
-* <details>
-  <summary><b>Click to show UPI QR Code (India)</b></summary>
-  <img src="https://github.com/user-attachments/assets/5a7461be-9bb1-401a-8877-98e148ddd80d" width="250" alt="Star_Trowa UPI QR Code">
-</details>
+- **GitHub Sponsors:** [Sponsor @Star-Trowa](https://github.com/sponsors/Star-Trowa)
+- **Ko-fi:** [ko-fi.com/Star_Trowa](https://ko-fi.com/star_trowa)
+- <details>
+    <summary><b>Click to show UPI QR Code (India)</b></summary>
+    <img src="https://github.com/user-attachments/assets/5a7461be-9bb1-401a-8877-98e148ddd80d" width="250" alt="Star_Trowa UPI QR Code">
+  </details>
 
 If Star-BookOrbit has been useful to you, please ⭐ star the project on GitHub. It helps others discover it too.
 

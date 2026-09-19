@@ -9,22 +9,17 @@ class CheckServerStatusUseCase(
     suspend operator fun invoke(targetUrl: String): ServerConnectionResult {
         val cleanUrl = targetUrl.removeSuffix("/")
 
-        try {
-            for (verifier in verifiers) {
-                try {
-                    if (verifier.verify(cleanUrl)) {
-                        return ServerConnectionResult.Success(verifier.serverType)
-                    }
-                } catch (e: java.io.IOException) {
-                    // If the IP is dead, it's dead for all verifiers. Bail immediately.
-                    return ServerConnectionResult.Unreachable
+        for (verifier in verifiers) {
+            try {
+                if (verifier.verify(cleanUrl)) {
+                    return ServerConnectionResult.Success(verifier.serverType)
                 }
+            } catch (_: java.io.IOException) {
+                // If the IP is dead, it's dead for all verifiers. Bail immediately.
+                return ServerConnectionResult.Unreachable
             }
-            // Reached the IP, but no verifier claimed it
-            return ServerConnectionResult.UnsupportedServer
-
-        } catch (e: CancellationException) {
-            throw e
         }
+        // Reached the IP, but no verifier claimed it
+        return ServerConnectionResult.UnsupportedServer
     }
 }

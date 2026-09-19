@@ -24,6 +24,8 @@ class SetupActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySetupBinding
 
+    private var forceShowSetup = false
+
     private val viewModel: SetupViewModel by viewModels {
         val container = (application as StarBookOrbitApp).container
         SetupViewModel.factory(
@@ -37,10 +39,14 @@ class SetupActivity : AppCompatActivity() {
 
         binding = ActivitySetupBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.content.isVisible = false
+        binding.progress.isVisible = true
 
         // 1. Handle pre-filled URL from disconnects
         val prefill = intent.getStringExtra(EXTRA_PREFILL_URL)
         prefill?.let { binding.inputUrl.editText?.setText(it) }
+
+        forceShowSetup = intent.getBooleanExtra("force_show_setup", false)
 
         // 2. Start listening to the ViewModel
         observeState()
@@ -90,29 +96,27 @@ class SetupActivity : AppCompatActivity() {
     }
 
     private fun observeState() {
-        // Check if the flag was thrown
-        val forceShow = intent.getBooleanExtra("force_show_setup", false)
-        // Remove it so Android forgets it on recreation
-        if (forceShow) {
-            intent.removeExtra("force_show_setup")
-        }
-
         lifecycleScope.launch {
             viewModel.state.collectLatest { state ->
                 when (state) {
                     is SetupViewModel.State.CheckingExisting -> showLoading(true)
                     is SetupViewModel.State.ExistingConfig -> {
-                        if (forceShow) {
+                        if (forceShowSetup) {
                             // If swapping servers, ignore the saved config and show the UI
+                            binding.content.isVisible = true
                             showLoading(false)
                         } else {
                             // Normal app launch, log right in
                             navigateToReader(state.config)
                         }
                     }
-                    is SetupViewModel.State.Idle -> showLoading(false)
+                    is SetupViewModel.State.Idle -> {
+                        binding.content.isVisible = true
+                        showLoading(false)
+                    }
                     is SetupViewModel.State.Saving -> showLoading(true)
                     is SetupViewModel.State.Error -> {
+                        binding.content.isVisible = true
                         showLoading(false)
                         binding.inputUrl.error = state.message
                     }

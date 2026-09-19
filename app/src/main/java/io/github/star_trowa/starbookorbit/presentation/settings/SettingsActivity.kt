@@ -111,7 +111,7 @@ class SettingsActivity : AppCompatActivity() {
         } catch (_: Exception) {
             Snackbar.make(
                 binding.root,
-                "Unable to open link",
+                R.string.settings_link_unavailable,
                 Snackbar.LENGTH_SHORT
             ).show()
         }
