@@ -35,6 +35,10 @@
             android:exported="false"
             android:label="@string/settings_title" />
 
+        <activity
+            android:name=".presentation.about.AboutActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

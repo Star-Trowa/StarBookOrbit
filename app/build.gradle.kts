@@ -14,8 +14,8 @@ android {
         applicationId = "io.github.star_trowa.starbookorbit"
         minSdk = 26
         targetSdk = 36
-        versionCode = 5
-        versionName = "1.4.1"
+        versionCode = 6
+        versionName = "2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -35,6 +35,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 

@@ -1,5 +1,13 @@
 # Star-BookOrbit — BookOrbit Android Client
 
+<a href="https://github.com/Star-Trowa/StarBookOrbit/stargazers"><img src="https://img.shields.io/github/stars/Star-Trowa/StarBookOrbit?style=flat&logo=github" width="200"></a>
+<a href="https://github.com/Star-Trowa/StarBookOrbit/releases"><img src="https://img.shields.io/github/downloads/Star-Trowa/StarBookOrbit/total?label=Downloads&logo=github" width="200"></a>
+<a href="https://github.com/Star-Trowa/StarBookOrbit/releases/latest"><img src="https://img.shields.io/github/v/release/Star-Trowa/StarBookOrbit?label=Latest%20Release" width="200"></a>
+<a href="https://github.com/sponsors/Star-Trowa">
+<img src="https://img.shields.io/github/sponsors/Star-Trowa?label=GitHub%20Sponsors&logo=githubsponsors&logoColor=white" alt="GitHub Sponsors" height="28">
+</a>
+<a href="https://github.com/Star-Trowa/StarBookOrbit/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Star-Trowa/StarBookOrbit" width="200"></a>
+
 A clean, open-source Android client for your self-hosted [BookOrbit](https://github.com/bookorbit/bookorbit) library.
 
 No browsers, tracking, ads, or accounts. Just your books. And a feature rich book reader.
@@ -10,18 +18,16 @@ No browsers, tracking, ads, or accounts. Just your books. And a feature rich boo
 
 BookOrbit's web UI and the built-in reader is excellent — but opening it in a browser means living with tabs, address bars, and the browser stealing your back button. Star-BookOrbit wraps it in a proper Android app so it behaves like one.
 
-| Without Star BookOrbit                                                        | With Star BookOrbit                                                                              |
-|-------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
-| Browser toolbar takes up screen space                                         | Full screen reading experience                                                                   |
-| Back button closes the tab                                                    | Back navigates inside your library                                                               |
-| Session mixed with browser cookies                                            | Isolated, always stays logged in                                                                 |
-| "Add to homescreen" still shows browser chrome                                | Real app icon, real app. Works with http also if you are self-hosting (or using Tailscale, etc.) |
-| Loses your server URL on browser clear                                        | Remembers your server permanently                                                                |
-| Reading stats are not instant or reliable                                     | Built-in reading stats give complete, clean, in-depth details                                    |
-| Browser needs to be opened, your tab needs to be tracked by you               | Directly open your BookOrbit app and start browsing your books, low memory footprint             |
-| You've to use additional OPDS apps, where two way sync is not always possible | Two-way sync is built in as you are using the BookOrbit built-in reader itself                   |
-| Volume keys cannot be used for navigating between next and previous page      | Your device's hardware button, like mobile volume keys can be used to navigate the book          |
-
+| Feature | Without Star-BookOrbit                                                                          | With Star-BookOrbit                                                                              |
+| :--- |:------------------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------|
+| **Interface** | Cluttered with browser toolbars                                                                 | Immersive, full-screen reading                                                                   |
+| **Navigation** | Device back button often closes the tab                                                         | Native back navigation within your library                                                       |
+| **Session** | Mixed cookies; sessions can expire                                                              | Isolated environment; stays logged in                                                            |
+| **Integration** | “Add to homescreen” still shows browser UI                                                      | Dedicated app icon and interface; works with HTTP, self-hosting, and Tailscale                   |
+| **Data Retention** | Clearing browser data can wipe your server URL                                                  | Remembers your server configuration                                                              |
+| **Access & Performance** | Cumbersome tab management; higher memory usage                                                  | One-tap access to your books; low memory footprint                                               |
+| **Sync & Stats** | Relies on OPDS apps; two-way sync may be delayed or unreliable, with limited reading statistics | Built-in two-way sync with instant, in-depth reading statistics direct from the BookOrbit reader |
+| **Hardware Controls** | Touch-only / basic native page navigation                                                       | Hardware volume keys and tap zones supported for page turning                                    |
 ---
 
 ## Screenshots
@@ -61,16 +67,18 @@ BookOrbit's web UI and the built-in reader is excellent — but opening it in a 
 
 ## Features
 
-- **Zero Browser Chrome:** True edge-to-edge reading. No address bars, nor bottom navigation tabs.
-- **HTTP, HTTPS & Tailscale Friendly:** Bypasses standard PWA HTTPS restrictions, easily handling raw local IPs and custom ports.
-- **Draggable Utility Button:** A transparent, movable FAB that stays out of the way of your book text while giving you quick access to refresh or disconnect.
-- **Encrypted Caching:** Your server URLs and connection strings are secured locally using Android's `EncryptedSharedPreferences`.
-- **Universal Compatibility:** Built perfectly for BookOrbit, but naturally supports any responsive self-hosted media server (Kavita, Audiobookshelf, Komga) (Future Roadmap).
-- **New!!!** Use Volume keys to move between your ebook pages easily and ergonomically.
-- Remembers your BookOrbit server URL across restarts
-- Full Material Design 3 with dynamic color (Android 12+)
-- Zero telemetry, zero analytics, zero accounts
-- FOSS
+- **Native Android Reading Experience:** Full-screen, edge-to-edge reading with no browser address bars, tabs, or browser UI.
+- **Built-in BookOrbit Reader:** Read directly through the BookOrbit reader with its built-in two-way sync and reading statistics, instead of using a separate ebook app.
+- **HTTP, HTTPS & Tailscale Friendly:** Connect to local IP addresses, custom ports, plain HTTP, HTTPS, or BookOrbit instances accessed through Tailscale.
+- **Persistent Server Configuration:** Your BookOrbit server URL is securely stored and remembered across app restarts.
+- **Encrypted Local Storage:** Server URLs and connection data are protected using Android's `EncryptedSharedPreferences`.
+- **Draggable Utility Button:** A translucent, movable floating button (FAB) provides quick access to refresh, switch servers, and settings without getting in the way of your reading.
+- **Hardware Page Controls:** Use your device's _volume keys_ or _tap zones_ to move between ebook pages for convenient, ergonomic navigation.
+- **Material You Dynamic Colors:** Automatically adapts to your system color palette on Android 12+ for a native, personalized experience.
+- **Audiobook Support:** Listen to audiobooks directly through the app, including background playback.
+- **Lightweight & Focused:** Designed specifically for self-hosted BookOrbit without unnecessary browser overhead.
+- **FOSS & Private:** 100% free and open-source. Zero telemetry, zero analytics, zero ads, and no accounts required.
+
 ---
 
 ## Getting Started
@@ -78,16 +86,21 @@ BookOrbit's web UI and the built-in reader is excellent — but opening it in a 
 ### Prerequisites
 
 - Android 8.0+ (API 26)
-- A running [BookOrbit](https://github.com/bookorbit/bookorbit) instance accessible from your phone (the url:port should be your own BookOrbit address)
+- A running [BookOrbit](https://github.com/bookorbit/bookorbit) instance accessible from your phone (the **url:port** should be your own BookOrbit address). For example:
   - Local network: `http://192.168.x.x:8090`
   - Remote (e.g. via Tailscale): `http://100.x.x.x:8090`
-  - Public HTTPS (e.g. via Cloudflare or nginx): `https://your-device.ts.net`
+  - Public HTTPS (e.g. via Cloudflare or nginx or Tailscale funnel): `https://your-device.ts.net`
 
+`StarBookOrbit is a community project and is not affiliated with or maintained by BookOrbit.`
 ### Install
 
-Download the latest APK from [Releases](../../releases) and sideload it, or build from source below.
+Download the latest APK directly:
 
-(Or add it to your [Obtainium](https://github.com/ImranR98/Obtainium)/[ObtainX](https://github.com/Diegoprofeta/ObtainX))
+[![Latest Release](https://img.shields.io/github/v/release/Star-Trowa/StarBookOrbit?label=Download%20APK)](https://github.com/Star-Trowa/StarBookOrbit/releases/latest)
+
+<a href="https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://add/https://github.com/Star-Trowa/StarBookOrbit">
+<img src="assets/badge_obtainium.png" alt="Get it on Obtainium" width="140" height="40">
+</a>
 
 ### Build from source
 
@@ -101,7 +114,7 @@ cd StarBookOrbit
 
 ## Usage (3 easy steps)
 
-1. Open Orbit — enter your BookOrbit server URL on first launch
+1. Open StarBookOrbit — enter your BookOrbit server URL on first launch
 2. Tap **Connect** — your library opens full screen
 3. The small floating, translucent button gives you **Refresh**, **Swap server** and **Settings**
 
@@ -113,32 +126,38 @@ cd StarBookOrbit
 
 ## Troubleshooting
 ### 1. Audio pausing in the background?
-  Android's battery optimization might kill the app while you are listening with the screen off. To fix this:
-  - In app, go to Settings > Battery
-  - Update the battery settings to unrestricted
+Android's battery optimization might kill the app while you are listening with the screen off. To fix this:
+- In app, go to Settings > Battery
+- Update the battery settings to unrestricted
 
 OR
 
-  - Long-press the StarBookOrbit app icon and tap App Info (the ⓘ button).
-  - Tap on App battery usage (or just Battery).
-  - Change the setting from "Optimized" to "Unrestricted".
+- Long-press the StarBookOrbit app icon and tap App Info (the ⓘ button).
+- Tap on App battery usage (or just Battery).
+- Change the setting from "Optimized" to "Unrestricted".
 
 ### 2. Volume keys not working to navigate the pages?
-  The setting need to be enabled first to turn pages using volume keys. To enable this:
-  - In app, go to Settings > Navigate Ebook
-  - Change the toggle to enable(or disable) navigation via the volume keys
+The setting need to be enabled first to turn pages using volume keys. To enable this:
+- In app, go to Settings > Navigate Ebook
+- Change the toggle to enable(or disable) navigation via the volume keys
 
+### 3. Tap to navigate not turning the pages?
+The setting need to be enabled first to use tap-zones for navigation. To enable this:
+- In app, go to Settings > Navigate Ebook
+- Change the toggle to enable(or disable) navigation via the tap-zones
 
 ---
 
 ## Roadmap
 
-- [ ] Add option to navigate via tap besides swipe
-- ~~[x] Use Volume keys to navigate the pages~~
+- [x] Use volume keys to navigate between pages
+- [x] Material You dynamic colors — the app automatically adapts to your phone’s system color palette on Android 12+ for a more native, personalized reading experience
+- [x] Add option to navigate via tap besides swipe
 - [ ] Multiple saved server URLs
-- [ ] Theme override (force light/dark independent of system)
+- [ ] Theme override (force light/dark independently of system settings)
 - [ ] Support for Audiobookshelf and Kavita
-- [ ] F-Droid release
+- [ ] F-Droid/Droidify release
+
 
 ---
 
@@ -159,7 +178,7 @@ MIT — do whatever you want with it.
 
 ## Support
 
-If my themes made your keyboard a little nicer, consider supporting my work:
+If Star-BookOrbit made your bookworming a little nicer, a little happier, consider supporting my work:
 
 * **GitHub Sponsors:** [Sponsor @Star-Trowa](https://github.com/sponsors/Star-Trowa)
 * **Ko-fi:** [ko-fi.com/Star_Trowa](https://ko-fi.com/star_trowa)
@@ -168,4 +187,6 @@ If my themes made your keyboard a little nicer, consider supporting my work:
   <img src="https://github.com/user-attachments/assets/5a7461be-9bb1-401a-8877-98e148ddd80d" width="250" alt="Star_Trowa UPI QR Code">
 </details>
 
-Please **star** this project if it helped you :)
+If Star-BookOrbit has been useful to you, please ⭐ star the project on GitHub. It helps others discover it too.
+
+Thank you for supporting the project!

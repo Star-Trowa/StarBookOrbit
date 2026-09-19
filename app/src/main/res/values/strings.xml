@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <string name="app_name">Star BookOrbit</string>
+    <string name="app_name">Star-BookOrbit</string>
     <string name="setup_subtitle">Connect to your BookOrbit library</string>
     <string name="btn_connect">Connect</string>
     <string name="btn_retry">Try Again</string>
@@ -22,4 +22,28 @@
     <string name="settings_volume_paging">Turn book pages with volume keys</string>
     <string name="open_user_options">Open user options</string>
     <string name="forward">Forward</string>
+
+    <string name="settings_tap_zones">Turn book pages with tap zones</string>
+    <string name="settings_tap_zones_note">Tap zones work with all supported book formats. PDF support is experimental. If you experience any unexpected behavior, please let us know on GitHub.</string>
+    <string name="settings_section_support">Community &amp; Connect</string>
+    <string name="settings_support">Support the Developer</string>
+    <string name="settings_share">Share this App</string>
+    <string name="settings_about">About</string>
+
+    <string name="about_title">About Star-BookOrbit</string>
+    <string name="about_app_description">A clean, open-source Android client for your self-hosted BookOrbit library.</string>
+    <string name="about_developer">Developer</string>
+    <string name="about_version_label">Version</string>
+    <string name="about_version">Version %1$s</string>
+    <string name="about_github">GitHub Repository</string>
+    <string name="about_source_code">Source Code</string>
+    <string name="about_star_github">Star this on GitHub</string>
+    <string name="about_releases">What\'s New</string>
+    <string name="about_other_projects">Other Projects by Me</string>
+    <string name="about_heliboard_rosepine">Rosé Pine for HeliBoard</string>
+    <string name="about_heliboard_themes">HeliBoard &amp; LeanType Themes</string>
+    <string name="about_linkding_themes">Linkding Themes</string>
+
+    <string name="share_starbookorbit_text">Check out Star-BookOrbit; an open-source Android client for self-hosted BookOrbit libraries:\nhttps://github.com/Star-Trowa/StarBookOrbit</string>
+    <string name="dev_name">Star-Trowa</string>
 </resources>

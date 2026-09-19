@@ -45,20 +45,55 @@
                 app:strokeWidth="1dp"
                 app:strokeColor="?attr/colorOutline">
 
-                <com.google.android.material.materialswitch.MaterialSwitch
-                    android:id="@+id/switchVolumePaging"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/settings_volume_paging"
-                    android:padding="16dp"
-                    android:textAppearance="?attr/textAppearanceListItem" />
+                    android:orientation="vertical">
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/switchVolumePaging"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:text="@string/settings_volume_paging"
+                        android:textAppearance="?attr/textAppearanceListItem" />
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/switchTapZones"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:text="@string/settings_tap_zones"
+                        android:textAppearance="?attr/textAppearanceListItem" />
+
+                    <!-- PDF tap-zone note -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="@string/settings_tap_zones_note"
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
+
+                </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Battery -->
-            <TextView style="@style/SettingsSectionHeader" android:text="@string/settings_section_battery" />
 
-            <com.google.android.material.card.MaterialCardView style="@style/SettingsCard">
+            <!-- Battery -->
+            <TextView
+                style="@style/SettingsSectionHeader"
+                android:text="@string/settings_section_battery" />
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/SettingsCard">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -82,9 +117,76 @@
                         android:text="@string/settings_battery_action" />
 
                 </LinearLayout>
+
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Future sections go here: Saved Servers, Support, Troubleshooting, Data -->
+            <!-- Support & About -->
+            <TextView
+                style="@style/SettingsSectionHeader"
+                android:text="@string/settings_section_support" />
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/SettingsCard"
+                android:layout_marginTop="8dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorOutline">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <!-- Donate -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnDonate"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|start"
+                        android:padding="16dp"
+                        android:text="@string/settings_support"
+                        android:textAppearance="?attr/textAppearanceListItem"
+                        app:icon="@drawable/ic_open_in_new"
+                        app:iconGravity="end"
+                        app:iconPadding="8dp"
+                        app:iconTint="?attr/colorOnSurfaceVariant" />
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <!-- Share -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnShare"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|start"
+                        android:padding="16dp"
+                        android:text="@string/settings_share"
+                        android:textAppearance="?attr/textAppearanceListItem" />
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <!-- About -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnAbout"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|start"
+                        android:padding="16dp"
+                        android:text="@string/settings_about"
+                        android:textAppearance="?attr/textAppearanceListItem" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
 
             <Space android:layout_width="match_parent" android:layout_height="32dp" />
 

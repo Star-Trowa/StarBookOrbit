@@ -35,6 +35,7 @@ import io.github.star_trowa.starbookorbit.StarBookOrbitApp
 import io.github.star_trowa.starbookorbit.databinding.ActivityReaderBinding
 import io.github.star_trowa.starbookorbit.presentation.settings.SettingsActivity
 import io.github.star_trowa.starbookorbit.presentation.setup.SetupActivity
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -46,6 +47,17 @@ class ReaderActivity : AppCompatActivity() {
         private const val PREFS_HINTS = "orbit_hints"
         private const val KEY_DRAG_HINT_SHOWN = "drag_hint_shown"
         private val AUDIO_FORMATS = listOf("=m4b", "=mp3", "=ogg", "=m4a", "=opus", "=flac")
+        private val COMIC_FORMATS = listOf("cbz", "cbr", "cb7")
+        private val JS_CHECK_HEADER_VISIBLE = """
+            (function() {
+                var header = document.querySelector('header');
+                if (!header) return false;
+                var style = window.getComputedStyle(header);
+                var opacity = parseFloat(style.opacity);
+                var rect = header.getBoundingClientRect();
+                return opacity > 0.05 && rect.bottom > 0;
+            })();
+        """.trimIndent()
     }
     private lateinit var currentUrl: String
 
@@ -55,14 +67,34 @@ class ReaderActivity : AppCompatActivity() {
 
     // Default to false so hardware powered page navigation remains off unless explicitly enabled
     private var isVolumePagingEnabled: Boolean = false
+    private var isTapPagingEnabled: Boolean = false
+
+    // Tracks whether the web app's fixed header/status bar is currently visible.
+    // Defaults to true so tap zones stay OFF until the JS watcher confirms it's hidden.
+    @Volatile
+    private var isHeaderVisible: Boolean = true
 
     private val filePickerLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            val uris = if (result.resultCode == RESULT_OK) {
-                WebChromeClient.FileChooserParams.parseResult(result.resultCode, result.data)
-            } else {
-                null
-            }
+            val uris: Array<Uri>? =
+                if (result.resultCode == RESULT_OK && result.data != null) {
+                    val data = result.data!!
+                    when {
+                        data.clipData != null -> {
+                            // Multiple files selected
+                            Array(data.clipData!!.itemCount) { index ->
+                                data.clipData!!.getItemAt(index).uri
+                            }
+                        }
+                        data.data != null -> {
+                            // Single file selected
+                            arrayOf(data.data!!)
+                        }
+                        else -> null
+                    }
+                } else {
+                    null
+                }
             fileUploadCallback?.onReceiveValue(uris)
             fileUploadCallback = null
         }
@@ -98,6 +130,8 @@ class ReaderActivity : AppCompatActivity() {
 
         // Setup UI components
         setupWebView()
+        startHeaderVisibilityPolling()
+        setupTapZones()
         setupBackHandler()
         setupFab()
 
@@ -143,6 +177,160 @@ class ReaderActivity : AppCompatActivity() {
         return super.onKeyUp(keyCode, event)
     }
 
+    private fun navigateReader(direction: String) {
+        if (!isCurrentlyReading()) return
+
+        if (isPdfReader()) {
+            binding.webView.requestFocus()
+            val keyCode = if (direction == "next") {
+                KeyEvent.KEYCODE_DPAD_RIGHT
+            } else {
+                KeyEvent.KEYCODE_DPAD_LEFT
+            }
+            binding.webView.dispatchKeyEvent(
+                KeyEvent(KeyEvent.ACTION_DOWN, keyCode)
+            )
+            binding.webView.dispatchKeyEvent(
+                KeyEvent(KeyEvent.ACTION_UP, keyCode)
+            )
+            return
+        }
+        triggerEpubNavigation(direction)
+    }
+
+    private fun triggerEpubNavigation(direction: String) {
+        val js = if (direction == "next") {
+            """
+        (function() {
+            try {
+                const reader = document.querySelector('foliate-view');
+
+                if (reader && typeof reader.next === 'function') {
+                    reader.next();
+                    return "foliate-next";
+                }
+
+                const event = new KeyboardEvent('keydown', {
+                    key: 'ArrowRight',
+                    code: 'ArrowRight',
+                    keyCode: 39,
+                    which: 39,
+                    bubbles: true,
+                    cancelable: true,
+                    composed: true
+                });
+
+                const frames = document.querySelectorAll('iframe');
+
+                for (const frame of frames) {
+                    try {
+                        const doc = frame.contentDocument;
+                        if (!doc) continue;
+
+                        const target =
+                            doc.activeElement ||
+                            doc.body ||
+                            doc.documentElement;
+
+                        if (target) {
+                            target.dispatchEvent(event);
+                            return "iframe-next";
+                        }
+                    } catch (e) {
+                        // Ignore inaccessible iframe.
+                    }
+                }
+
+                document.dispatchEvent(event);
+                return "document-next";
+
+            } catch (e) {
+                return "error-next";
+            }
+        })();
+        """.trimIndent()
+        } else {
+            """
+        (function() {
+            try {
+                const reader = document.querySelector('foliate-view');
+
+                if (reader && typeof reader.prev === 'function') {
+                    reader.prev();
+                    return "foliate-prev";
+                }
+
+                const event = new KeyboardEvent('keydown', {
+                    key: 'ArrowLeft',
+                    code: 'ArrowLeft',
+                    keyCode: 37,
+                    which: 37,
+                    bubbles: true,
+                    cancelable: true,
+                    composed: true
+                });
+
+                const frames = document.querySelectorAll('iframe');
+
+                for (const frame of frames) {
+                    try {
+                        const doc = frame.contentDocument;
+                        if (!doc) continue;
+
+                        const target =
+                            doc.activeElement ||
+                            doc.body ||
+                            doc.documentElement;
+
+                        if (target) {
+                            target.dispatchEvent(event);
+                            return "iframe-prev";
+                        }
+                    } catch (e) {
+                        // Ignore inaccessible iframe.
+                    }
+                }
+
+                document.dispatchEvent(event);
+                return "document-prev";
+
+            } catch (e) {
+                return "error-prev";
+            }
+        })();
+        """.trimIndent()
+        }
+
+        binding.webView.evaluateJavascript(js, null)
+    }
+
+    private fun isPdfReader(): Boolean {
+        val url = binding.webView.url?.lowercase() ?: return false
+
+        return url.contains(".pdf") ||
+                url.contains("/pdf") ||
+                url.contains("format=pdf")
+    }
+
+    private fun isComicReader(): Boolean {
+        val url = binding.webView.url?.lowercase() ?: return false
+        return COMIC_FORMATS.any { ext -> url.contains(".$ext") || url.contains("format=$ext") }
+    }
+
+    // True only for the epub/Foliate reader. The one reader whose header
+    // actually shows/hides. PDF's header is permanently visible, and comics
+    // have their own overlay entirely, so neither needs header polling.
+    private fun needsHeaderTracking(): Boolean {
+        return isCurrentlyReading() && !isPdfReader() && !isComicReader()
+    }
+
+    // True whenever our overlay tap zones should be allowed to claim a tap.
+    // Comics ship their own tap-to-turn-page zones, so they're excluded here
+    // even though isCurrentlyReading() is still true for them.
+    private fun customTapZonesEligible(): Boolean {
+        return isCurrentlyReading() && !isComicReader()
+    }
+
     private fun isCurrentlyReading(): Boolean {
         return isEbookUrl(binding.webView.url)
     }
@@ -150,18 +338,15 @@ class ReaderActivity : AppCompatActivity() {
     private fun isEbookUrl(url: String?): Boolean {
         if (url == null || !url.contains("/read", ignoreCase = true)) return false
 
-        // If the URL contains any of these, it's an audiobook, not an ebook
         return AUDIO_FORMATS.none { url.contains(it, ignoreCase = true) }
     }
 
     private fun scrollToNextPage() {
-        binding.webView.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_RIGHT))
-        binding.webView.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_RIGHT))
+        navigateReader("next")
     }
 
     private fun scrollToPreviousPage() {
-        binding.webView.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_LEFT))
-        binding.webView.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_LEFT))
+        navigateReader("prev")
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -232,6 +417,11 @@ class ReaderActivity : AppCompatActivity() {
             val popup = PopupMenu(this, anchor)
             popup.menuInflater.inflate(R.menu.reader_menu, popup.menu)
 
+            // Return focus to WebView if menu is closed without selecting an option
+            popup.setOnDismissListener {
+                binding.webView.requestFocus()
+            }
+
             // Only show "Forward" if there is actually a page to go forward to
             val forwardItem = popup.menu.findItem(R.id.action_forward)
             forwardItem?.isVisible = binding.webView.canGoForward()
@@ -288,7 +478,7 @@ class ReaderActivity : AppCompatActivity() {
     private fun Int.dpToPx(): Int =
         (this * Resources.getSystem().displayMetrics.density).toInt()
 
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint("SetJavaScriptEnabled", "JavascriptInterface")
     private fun setupWebView() {
         val cookieManager = android.webkit.CookieManager.getInstance()
         cookieManager.setAcceptCookie(true)
@@ -296,6 +486,8 @@ class ReaderActivity : AppCompatActivity() {
         // cookieManager.setAcceptThirdPartyCookies(binding.webView, true)
 
         binding.webView.apply {
+            isFocusable = true
+            isFocusableInTouchMode = true
             settings.apply {
                 javaScriptEnabled = true
                 domStorageEnabled = true
@@ -386,19 +578,28 @@ class ReaderActivity : AppCompatActivity() {
                     filePathCallback: ValueCallback<Array<Uri>>?,
                     fileChooserParams: FileChooserParams?
                 ): Boolean {
+
                     fileUploadCallback?.onReceiveValue(null)
                     fileUploadCallback = filePathCallback
 
-                    val intent = fileChooserParams?.createIntent() ?: Intent(Intent.ACTION_GET_CONTENT).apply {
+                    val allowMultiple =
+                        fileChooserParams?.mode == WebChromeClient.FileChooserParams.MODE_OPEN_MULTIPLE
+
+                    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                        addCategory(Intent.CATEGORY_OPENABLE)
+
+                        // Do NOT inherit the website's restrictive accept filter.
                         type = "*/*"
+
+                        putExtra(Intent.EXTRA_ALLOW_MULTIPLE, allowMultiple)
                     }
 
                     try {
                         filePickerLauncher.launch(intent)
                     } catch (_: ActivityNotFoundException) {
-                        fileUploadCallback?.onReceiveValue(null) // Safe-reset the WebView engine; tell WebView: canceled
-                        fileUploadCallback = null // Clear the reference
-                        return false // Tell WebChromeClient: failed
+                        fileUploadCallback?.onReceiveValue(null)
+                        fileUploadCallback = null
+                        return false
                     }
                     return true
                 }
@@ -407,6 +608,132 @@ class ReaderActivity : AppCompatActivity() {
 
         binding.btnRetry.setOnClickListener {
             viewModel.verifyServer(currentUrl)
+        }
+    }
+
+
+    private fun startHeaderVisibilityPolling() {
+        lifecycleScope.launch {
+            while (true) {
+                if (isTapPagingEnabled && needsHeaderTracking()) {
+                    binding.webView.evaluateJavascript(JS_CHECK_HEADER_VISIBLE) { result ->
+                        isHeaderVisible = result == "true"
+                    }
+                } else {
+                    // PDF, comics, not reading, or tap paging off — nothing to track.
+                    isHeaderVisible = false
+                }
+                delay(250)
+            }
+        }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setupTapZones() {
+        var downX = 0f
+        var downY = 0f
+        var downTime = 0L
+        var edgeGesture = false
+
+        val touchSlop = android.view.ViewConfiguration
+            .get(this)
+            .scaledTouchSlop
+
+        binding.webView.setOnTouchListener { _, event ->
+
+            when (event.actionMasked) {
+
+                MotionEvent.ACTION_DOWN -> {
+
+                    // Let the normal BookOrbit WebView handle scrolling/swiping.
+                    if (!isCurrentlyReading() || !isTapPagingEnabled) {
+                        return@setOnTouchListener false
+                    }
+
+                    downX = event.x
+                    downY = event.y
+                    downTime = android.os.SystemClock.uptimeMillis()
+
+                    edgeGesture = false
+
+                    val headerBlocksTapZones =
+                        isHeaderVisible && needsHeaderTracking()
+
+                    if (!headerBlocksTapZones && customTapZonesEligible()) {
+                        val width = binding.webView.width
+                        val height = binding.webView.height
+
+                        if (width > 0 && height > 0) {
+                            val controlBarHeight = (height * 0.07f)
+                                .coerceIn(40.dpToPx().toFloat(), 64.dpToPx().toFloat())
+
+                            val inVerticalTapZone =
+                                event.y >= controlBarHeight &&
+                                        event.y <= height - controlBarHeight
+
+                            val inHorizontalTapZone =
+                                event.x < width / 3f ||
+                                        event.x > width * 2f / 3f
+
+                            edgeGesture =
+                                inVerticalTapZone && inHorizontalTapZone
+                        }
+                    }
+
+                    edgeGesture
+                }
+
+                MotionEvent.ACTION_MOVE -> {
+                    if (!isCurrentlyReading() || !isTapPagingEnabled) {
+                        return@setOnTouchListener false
+                    }
+
+                    edgeGesture
+                }
+
+                MotionEvent.ACTION_UP -> {
+                    if (!edgeGesture) {
+                        return@setOnTouchListener false
+                    }
+
+                    val dx = event.x - downX
+                    val dy = event.y - downY
+
+                    val distance = kotlin.math.sqrt(
+                        dx * dx + dy * dy
+                    )
+
+                    val duration =
+                        android.os.SystemClock.uptimeMillis() - downTime
+
+                    edgeGesture = false
+
+                    // Only treat it as a tap, not a swipe/drag.
+                    if (
+                        distance <= touchSlop * 2 &&
+                        duration <= 500L
+                    ) {
+                        val width = binding.webView.width
+
+                        if (event.x < width / 3f) {
+                            scrollToPreviousPage()
+                        } else if (event.x > width * 2f / 3f) {
+                            scrollToNextPage()
+                        }
+                    }
+
+                    true
+                }
+
+                MotionEvent.ACTION_CANCEL -> {
+                    edgeGesture = false
+                    true
+                }
+
+                else -> {
+                    edgeGesture
+                }
+            }
         }
     }
 
@@ -495,10 +822,12 @@ class ReaderActivity : AppCompatActivity() {
         super.onResume()
         // Wake the WebView back up
         binding.webView.onResume()
+        binding.webView.requestFocus()
 
         // Read the latest state from SharedPreferences every time the activity comes to the foreground
         val prefs = getSharedPreferences(SettingsActivity.PREFS_NAME, MODE_PRIVATE)
         isVolumePagingEnabled = prefs.getBoolean(SettingsActivity.KEY_VOLUME_PAGING, false)
+        isTapPagingEnabled = prefs.getBoolean(SettingsActivity.KEY_TAP_ZONES, false)
     }
 
     override fun onDestroy() {

@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorSurface"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="@string/about_title"
+            app:titleTextColor="?attr/colorOnSurface"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:navigationIconTint="?attr/colorOnSurface" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- App name -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textAppearance="?attr/textAppearanceHeadlineMedium"
+                android:textColor="?attr/colorOnSurface"
+                android:textStyle="bold" />
+
+            <!-- App description -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/about_app_description"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
+                android:textColor="?attr/colorOnSurfaceVariant" />
+
+            <!-- Main About card -->
+            <com.google.android.material.card.MaterialCardView
+                style="@style/SettingsCard"
+                android:layout_marginTop="24dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorOutline">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <!-- Developer label -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="16dp"
+                        android:paddingTop="12dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="6dp"
+                        android:text="@string/about_developer"
+                        android:textAppearance="?attr/textAppearanceLabelLarge"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
+
+                    <!-- Separator -->
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp" />
+
+                    <!-- Developer -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnDeveloper"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|start"
+                        android:padding="16dp"
+                        android:text="@string/dev_name"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?attr/colorPrimary"
+                        app:icon="@drawable/ic_open_in_new"
+                        app:iconGravity="end"
+                        app:iconPadding="8dp"
+                        app:iconTint="?attr/colorOnSurfaceVariant" />
+
+                    <!-- Separator -->
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp" />
+
+                    <!-- Version -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingStart="16dp"
+                        android:paddingTop="14dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="14dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/about_version_label"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
+
+                        <TextView
+                            android:id="@+id/tvVersion"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?attr/textAppearanceBodyLarge"
+                            android:textColor="?attr/colorOnSurface" />
+
+                    </LinearLayout>
+
+                    <!-- Separator -->
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp" />
+
+                    <!-- GitHub repository -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnGithub"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|start"
+                        android:padding="16dp"
+                        android:text="@string/about_source_code"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        app:icon="@drawable/ic_open_in_new"
+                        app:iconGravity="end"
+                        app:iconPadding="8dp"
+                        app:iconTint="?attr/colorOnSurfaceVariant" />
+
+                    <!-- Separator -->
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <!-- Star GitHub -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnStarGithub"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|start"
+                        android:padding="16dp"
+                        android:text="@string/about_star_github"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        app:icon="@drawable/ic_open_in_new"
+                        app:iconGravity="end"
+                        app:iconPadding="8dp"
+                        app:iconTint="?attr/colorOnSurfaceVariant" />
+
+                    <!-- Separator -->
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <!-- What's New / Releases -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnReleases"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|start"
+                        android:padding="16dp"
+                        android:text="@string/about_releases"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        app:icon="@drawable/ic_open_in_new"
+                        app:iconGravity="end"
+                        app:iconPadding="8dp"
+                        app:iconTint="?attr/colorOnSurfaceVariant" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Other Projects -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:text="@string/about_other_projects"
+                android:textAppearance="?attr/textAppearanceTitleLarge"
+                android:textColor="?attr/colorOnSurface"
+                android:textStyle="bold" />
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/SettingsCard"
+                android:layout_marginTop="8dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorOutline">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <!-- HeliBoard Themes -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnHeliBoardThemes"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|start"
+                        android:padding="16dp"
+                        android:text="@string/about_heliboard_themes"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        app:icon="@drawable/ic_open_in_new"
+                        app:iconGravity="end"
+                        app:iconPadding="8dp"
+                        app:iconTint="?attr/colorOnSurfaceVariant" />
+
+                    <!-- Separator -->
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <!-- HeliBoard RosePine -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnHeliBoard"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|start"
+                        android:padding="16dp"
+                        android:text="@string/about_heliboard_rosepine"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        app:icon="@drawable/ic_open_in_new"
+                        app:iconGravity="end"
+                        app:iconPadding="8dp"
+                        app:iconTint="?attr/colorOnSurfaceVariant" />
+
+                    <!-- Separator -->
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <!-- Linkding Themes -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnLinkdingThemes"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|start"
+                        android:padding="16dp"
+                        android:text="@string/about_linkding_themes"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        app:icon="@drawable/ic_open_in_new"
+                        app:iconGravity="end"
+                        app:iconPadding="8dp"
+                        app:iconTint="?attr/colorOnSurfaceVariant" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="32dp" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

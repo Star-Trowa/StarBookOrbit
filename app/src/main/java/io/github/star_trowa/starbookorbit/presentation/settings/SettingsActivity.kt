@@ -13,6 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.core.content.edit
+import io.github.star_trowa.starbookorbit.presentation.about.AboutActivity
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -21,6 +22,9 @@ class SettingsActivity : AppCompatActivity() {
     companion object {
         const val PREFS_NAME = "orbit_settings"
         const val KEY_VOLUME_PAGING = "pref_volume_paging"
+        const val KEY_TAP_ZONES = "pref_tap_zones"
+        const val DONATE_URL =
+            "https://github.com/Star-Trowa/StarBookOrbit#support"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +40,11 @@ class SettingsActivity : AppCompatActivity() {
             prefs.edit { putBoolean(KEY_VOLUME_PAGING, isChecked) }
         }
 
+        binding.switchTapZones.isChecked = prefs.getBoolean(KEY_TAP_ZONES, false)
+        binding.switchTapZones.setOnCheckedChangeListener { _, isChecked ->
+            prefs.edit { putBoolean(KEY_TAP_ZONES, isChecked) }
+        }
+
         ViewCompat.setOnApplyWindowInsetsListener(binding.appBar) { view, insets ->
             val statusBarInset = insets.getInsets(WindowInsetsCompat.Type.statusBars())
             view.updatePadding(top = statusBarInset.top)
@@ -44,6 +53,7 @@ class SettingsActivity : AppCompatActivity() {
         binding.toolbar.setNavigationOnClickListener { finish() }
 
         setupBattery()
+        setupSupport()
     }
 
     override fun onResume() {
@@ -60,6 +70,50 @@ class SettingsActivity : AppCompatActivity() {
             } catch (_: Exception) {
                 Snackbar.make(binding.root, R.string.settings_battery_unavailable, Snackbar.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    private fun setupSupport() {
+
+        binding.btnDonate.setOnClickListener {
+            openUrl(DONATE_URL)
+        }
+
+        binding.btnShare.setOnClickListener {
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(
+                    Intent.EXTRA_TEXT,
+                    getString(R.string.share_starbookorbit_text)
+                )
+            }
+
+            startActivity(
+                Intent.createChooser(
+                    shareIntent,
+                    getString(R.string.settings_share)
+                )
+            )
+        }
+
+        binding.btnAbout.setOnClickListener {
+            startActivity(
+                Intent(this, AboutActivity::class.java)
+            )
+        }
+    }
+
+    private fun openUrl(url: String) {
+        try {
+            startActivity(
+                Intent(Intent.ACTION_VIEW, url.toUri())
+            )
+        } catch (_: Exception) {
+            Snackbar.make(
+                binding.root,
+                "Unable to open link",
+                Snackbar.LENGTH_SHORT
+            ).show()
         }
     }
 }
